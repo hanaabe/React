@@ -9,6 +9,7 @@ import{
     signInWithPopup,
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
     
 }from 'firebase/auth';
 
@@ -77,5 +78,11 @@ console.log("error creating the user",error.message);
 export const createAuthUserWithEmailAndPassword =async(email,password)=>{
   if(!email || !password) return;
   return await createUserWithEmailAndPassword(auth,email,password);
+
+}; 
+
+export const signInAuthUserWithEmailAndPassword =async(email,password)=>{
+  if(!email || !password) return;
+  return await signInWithEmailAndPassword(auth,email,password);
 
 }; 
