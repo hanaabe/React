@@ -1,6 +1,6 @@
 import { async } from "@firebase/util";
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword,createUserDocumentFromAuth, signInWithGooglePopup,signInAuthUserWithEmailAndPassword} from "../../utils/firebase/firebase.utils";
+import {createUserDocumentFromAuth, signInWithGooglePopup,signInAuthUserWithEmailAndPassword} from "../../utils/firebase/firebase.utils";
 import FormInput from '../form-input/form-input.component';
 import './sign-in-form.styles.scss'
 import Button from "../button/button.component";
@@ -36,17 +36,20 @@ await createUserDocumentFromAuth(user);
             // await createUserDocumentFromAuth(user,{displayName});
             resetFormFields();
         }
-        catch(error){}
-        //     if(error.code=='auth/email-already-in-use'){
+        catch(error){
+            switch(error.code){
+                case'auth/wrong-password':
 
-        //     alert("cannot create user ,email already in use");
-        //     }
-        //     else{
-        //         console.log('user creation error',error); }
-   
-            
-
-        
+            alert("incorrect password for email");
+            break;
+            case 'auth/user-not-found':
+            alert('no user associated with this email');
+                break;
+                default:
+                console.log(error);
+            }
+           
+        }
     };
     const handleChange =(event)=>{
         const {name,value}=event.target;
@@ -99,7 +102,7 @@ label ='ConfirmPassword'
  value={confirmPassword}/> */}
 <div className='buttons-container'>
 <Button buttonType='google'  type="submit" >sign in</Button>
-<Button onClick={signInWithGoogle} buttonType="inverted">Google sign in</Button>
+<Button  type="button" onClick={signInWithGoogle} buttonType="google">Google sign in</Button>
 </div>
 
 </form>

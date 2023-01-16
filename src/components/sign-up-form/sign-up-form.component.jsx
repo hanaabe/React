@@ -49,12 +49,14 @@ const SignUpForm =()=>{
     };
     return(
         <div className="sign-up-container">
-            <span>sign up with email and password</span>
+           <b> <h2>Sign up with email and password</h2></b>
+           <br></br>
             <form onSubmit={handleSubmit}>
 
-
+            <label>Enter username</label>
 <FormInput 
 label ="Displayname"
+// <label>Enter your name</label>
 type='text' 
 required
  onChange ={handleChange}
@@ -62,7 +64,7 @@ required
  value={displayName}
  />
 
-{/* <label>email</label> */}
+<label>email</label>
 <FormInput 
 label ='Email'
  type ='email'
@@ -71,7 +73,7 @@ label ='Email'
  name='email' 
  value={email}
  />
- {/* <label>Password</label> */}
+ <label>Password</label>
 <FormInput 
 label ='Password'
 type ='password'
@@ -79,7 +81,7 @@ required
 onChange ={handleChange}
 name='password' 
 value={password}/>
-{/* <label>confirmPassword</label> */}
+<label>confirmPassword</label>
 <FormInput 
 label ='ConfirmPassword'
  type ='password'
