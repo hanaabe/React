@@ -1,11 +1,22 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import SHOP_DATA from '../../shop-data.json';
 import './shop.styles.scss';
+import { useContext } from "react";
+import { ProductsContext } from "../../context/products.context";
+import ProductCard from '../../components/product-card/product-card.component';
+
 const Shop=()=>{
+  const {products} =useContext(ProductsContext);
     return(
       
-      <div className="shop">
-        <h1>This is shop page</h1>
+      <div className="products-container">
+        {products.map((product) =>(
+          // <ProductCard/>
+         
+         <ProductCard key={product.id} product={product}/>
+        ))}
+
       </div>
       
     );

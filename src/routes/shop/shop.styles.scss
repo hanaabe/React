@@ -1,5 +1,11 @@
-.shop{
-    font-size: large;
-    margin-right: 20px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+// .shop{
+//     font-size: large;
+//     margin-right: 20px;
+//     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+// }
+.products-container{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    column-gap: 10px;
+    row-gap: 50px;
 }

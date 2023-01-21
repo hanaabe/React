@@ -4,7 +4,7 @@ import {createUserDocumentFromAuth, signInWithGooglePopup,signInAuthUserWithEmai
 import FormInput from '../form-input/form-input.component';
 import './sign-in-form.styles.scss'
 import Button from "../button/button.component";
-
+// import { UserContext } from "../../context/user.context";
 const defaultFormFields ={
   
     email:'',
@@ -17,12 +17,15 @@ const SignInForm =()=>{
     const {email,password}=formFields;
 
     console.log(formFields);
+//  const {setCurrentUser}= useContext(UserContext);
     const resetFormFields =()=>{
      setFormFields (defaultFormFields);  
     }
     const signInWithGoogle=async()=>{
         const {user}=await signInWithGooglePopup();
+        // setCurrentUser(user);
 await createUserDocumentFromAuth(user);
+
     }   ;  
     const handleSubmit =async(event) =>{
         event.preventDefault();
@@ -31,8 +34,9 @@ await createUserDocumentFromAuth(user);
         //     return;
         // }
         try{
-            const reponse  =await signInAuthUserWithEmailAndPassword(email,password);
-            console.log(reponse);
+            const {user}  =await signInAuthUserWithEmailAndPassword(email,password);
+            // setCurrentUser(user);
+            // console.log(reponse);
             // await createUserDocumentFromAuth(user,{displayName});
             resetFormFields();
         }
@@ -99,7 +103,7 @@ label ='ConfirmPassword'
  onChange ={handleChange}
  name='confirmPassword'
  
- value={confirmPassword}/> */}
+ value={confirmPassword}/> */}.
 <div className='buttons-container'>
 <Button buttonType='google'  type="submit" >sign in</Button>
 <Button  type="button" onClick={signInWithGoogle} buttonType="google">Google sign in</Button>
