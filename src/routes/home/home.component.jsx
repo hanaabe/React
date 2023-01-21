@@ -1,44 +1,42 @@
-// import './categories.styles.scss'
-// import CategoryItem from '../../components/category-item/category-item.component'
-import Directory from '../../components/directory/directory.component';
-// import './category-item.styles.scss';
-// import './category-CategoryItem.styles.scss';
 import { Outlet } from 'react-router-dom';
-const Home =() =>{
-  const categories=[ 
-    { 
+
+import Directory from '../../components/directory/directory.component';
+
+const Home = () => {
+  const categories = [
+    {
       id: 1,
-      title: 'Hats',
+      title: 'hats',
       imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
     },
     {
       id: 2,
-      title: 'Jackets',
+      title: 'jackets',
       imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
     },
     {
       id: 3,
-      title: 'Sneakers',
+      title: 'sneakers',
       imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
     },
     {
       id: 4,
-      title: 'Womens',
+      title: 'womens',
       imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
     },
     {
       id: 5,
-      title: 'Mens',
+      title: 'mens',
       imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
     },
   ];
-    return(
-      <div>
-      <Outlet/>
-       <Directory categories={categories}/>
-       </div>
-      
-    );    
 
+  return (
+    <div>
+      <Directory categories={categories} />
+      <Outlet />
+    </div>
+  );
 };
+
 export default Home;
