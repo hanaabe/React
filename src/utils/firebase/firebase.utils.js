@@ -15,12 +15,15 @@ import{
     onAuthStateChanged,
     
     
+    
 }from 'firebase/auth';
 
 import{
     getFirestore,
     doc,
     getDoc,
+    collection,
+    writeBatch,
     setDoc,
 }from 'firebase/firestore';
 // import { useCallback } from 'react';
@@ -54,6 +57,12 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments=async(collectionKey,ObjectsToAdd)=>{
+const collectionRef =collection(db,collectionKey);
+
+
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
