@@ -1,49 +1,36 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-// import {initializeApp } from 'firebase/app'
-// import { Form } from 'react-router-dom';
-import{
-    getAuth,
-    signInWithRedirect,
-    signInWithPopup,
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    
-    signOut,
-    onAuthStateChanged,
-    
-    
-    
-}from 'firebase/auth';
-
-import{
-    getFirestore,
-    doc,
-    getDoc,
-    collection,
-    writeBatch,
-    setDoc,
-}from 'firebase/firestore';
-// import { useCallback } from 'react';
-
-
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC8luxeHRwfkH4aL2IuPP8sBoUngRsWCJ0",
-    authDomain: "mydb-82676.firebaseapp.com",
-    projectId: "mydb-82676",
-    storageBucket: "mydb-82676.appspot.com",
-    messagingSenderId: "74886871496",
-    appId: "1:74886871496:web:00aa0ed2b9126bce4d28fd",
-    measurementId: "G-5MMTKDWR1P"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  // const firebaseApp = initializeApp(firebaseConfig);
-  
+  apiKey: 'AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk',
+  authDomain: 'crwn-clothing-db-98d4d.firebaseapp.com',
+  projectId: 'crwn-clothing-db-98d4d',
+  storageBucket: 'crwn-clothing-db-98d4d.appspot.com',
+  messagingSenderId: '626766232035',
+  appId: '1:626766232035:web:506621582dab103a4d08d6',
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+
 const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({
@@ -57,13 +44,37 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+//create categories  use collection and batch from firestore
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const batch = writeBatch(db);
+  const collectionRef = collection(db, collectionKey);
+  
+  objectsToAdd.forEach((object) => {
+     const docRef = doc(collectionRef, object.title.toLowerCase());
+     batch.set(docRef, object);
+  });
 
-export const addCollectionAndDocuments=async(collectionKey,ObjectsToAdd)=>{
-const collectionRef =collection(db,collectionKey);
-
-
+  await batch.commit();
+  console.log('done');
 };
 
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
+};
+//create user document in firestore
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
@@ -93,19 +104,21 @@ export const createUserDocumentFromAuth = async (
   return userDocRef;
 };
 
+//create userby authenticating email and password
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password);
 };
-
+// signin  with email and password
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await signInWithEmailAndPassword(auth, email, password);
 };
-
+// signout user from their account
 export const signOutUser = async () => await signOut(auth);
+// state change
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
