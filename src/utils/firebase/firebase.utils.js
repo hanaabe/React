@@ -13,24 +13,25 @@ import {
   getFirestore,
   doc,
   getDoc,
-  getDocs,
   setDoc,
   collection,
   writeBatch,
   query,
+  getDocs,
 } from 'firebase/firestore';
 
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBsdctdJwsMH3CveLOWh4tjvfeM6xftB04",
-  authDomain: "first-b7199.firebaseapp.com",
-  projectId: "first-b7199",
-  storageBucket: "first-b7199.appspot.com",
-  messagingSenderId: "709884735726",
-  appId: "1:709884735726:web:9e4c0ec6d73662f96183ff",
-  measurementId: "G-PWPMPR3X5T"
+  apiKey: "AIzaSyC8luxeHRwfkH4aL2IuPP8sBoUngRsWCJ0",
+  authDomain: "mydb-82676.firebaseapp.com",
+  projectId: "mydb-82676",
+  storageBucket: "mydb-82676.appspot.com",
+  messagingSenderId: "74886871496",
+  appId: "1:74886871496:web:00aa0ed2b9126bce4d28fd",
+  measurementId: "G-5MMTKDWR1P"
 };
 
-const App = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -45,17 +46,18 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
-//create categories  use collection and batch from firestore
+
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd
+  objectsToAdd,
+  field
 ) => {
-  const batch = writeBatch(db);
   const collectionRef = collection(db, collectionKey);
-  
+  const batch = writeBatch(db);
+
   objectsToAdd.forEach((object) => {
-     const docRef = doc(collectionRef, object.title.toLowerCase());
-     batch.set(docRef, object);
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
   });
 
   await batch.commit();
@@ -67,15 +69,10 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
 
-  return categoryMap;
+return querySnapshot.docs.map(docSnapshot=>docSnapshot.data());
 };
-//create user document in firestore
+
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
@@ -105,21 +102,19 @@ export const createUserDocumentFromAuth = async (
   return userDocRef;
 };
 
-//create userby authenticating email and password
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password);
 };
-// signin  with email and password
+
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await signInWithEmailAndPassword(auth, email, password);
 };
-// signout user from their account
+
 export const signOutUser = async () => await signOut(auth);
-// state change
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
