@@ -32,6 +32,7 @@ const ProductCard = ({ product }) => {
       >
         Add to cart
       </Button>
+      <alert message="product added"></alert>
     </ProductCartContainer>
   );
 };
