@@ -186,19 +186,18 @@
 // // export default Navigation;
 
 
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { selectIsCartOpen } from '../../store/cart/cart.selector';
 import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 
-import { CartContext } from '../../contexts/cart.context';
 import { selectCurrentUser } from '../../store/user/user.selector';
 
-import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
+// import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 
-// import { ReactComponent as Ha } from '../../assets/ha.jpg';
+import { ReactComponent as Ca } from '../../assets/ca.svg';
 import { signOutUser } from '../../utils/firebase/firebase.utils';
 
 import {
@@ -210,17 +209,20 @@ import {
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
-  const { isCartOpen } = useContext(CartContext);
+  const isCartOpen = useSelector(selectIsCartOpen);
 
   return (
     <Fragment>
       <NavigationContainer>
-        <LogoContainer to='/'>
-          <CrwnLogo className='logo' />
-        </LogoContainer>
         {/* <LogoContainer to='/'>
-          <Ha className='logo' />
+          <CrwnLogo className='logo' />
         </LogoContainer> */}
+        
+        <LogoContainer to='/'>
+          <Ca className='logo' /> 
+          
+         </LogoContainer>
+        {/* <lable><h1 >ecommerece</h1></lable> */}
         <NavLinks>
         <NavLink to='/'>
                     HOME
